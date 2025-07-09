@@ -25,14 +25,14 @@ questions = [
     ("Taip mes vieni kitiems padedame mokytis ________.", ["geriau", "blogiau", "tikrai"], "geriau"),
 ]
 
-# ✅ Init session state
-if 'started' not in st.session_state:
-    st.session_state.started = False
-    st.session_state.questions = random.sample(questions, len(questions))
-    st.session_state.current = 0
-    st.session_state.score = 0
-    st.session_state.show_result = False
-    st.session_state.answered = False  # Track if user answered
+# Ensure all keys exist every run
+st.session_state.setdefault('started', False)
+st.session_state.setdefault('questions', random.sample(questions, len(questions)))
+st.session_state.setdefault('current', 0)
+st.session_state.setdefault('score', 0)
+st.session_state.setdefault('show_result', False)
+st.session_state.setdefault('answered', False)
+
 
 # ✅ Title
 st.markdown(
