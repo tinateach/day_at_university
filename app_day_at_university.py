@@ -4,7 +4,24 @@ import random
 # Questions
 questions = [
     ("Aš esu _______ ir kiekvieną dieną einu į universitetą.", ["studentas", "mokytojas", "inžinierius"], "studentas"),
-    # (same list of questions as before) ...
+    ("Po paskaitų mes su draugais sėdime ________.", ["bibliotekoje", "parke", "kavinėje"], "bibliotekoje"),
+    ("Aš klausau _______ ir užsirašau svarbią informaciją.", ["dėstytojų", "draugų", "studentų"], "dėstytojų"),
+    ("Mes kartu _______ dirbame prie grupinių darbų.", ["visi", "abudu", "vienas"], "visi"),
+    ("Kartais aš nesuprantu ________, todėl klausiu dėstytojo.", ["užduoties", "muzikos", "žodžių"], "užduoties"),
+    ("Jis visada kantriai _______.", ["paaiškina", "skaito", "rašo"], "paaiškina"),
+    ("Mes klausome muzikos ______.", ["tyliai", "garsiai", "greitai"], "tyliai"),
+    ("Per paskaitas aš klausau ________.", ["dėstytojų", "draugų", "studentų"], "dėstytojų"),
+    ("Kartais aš nesuprantu užduoties, todėl klausiu ________.", ["dėstytojo", "draugo", "studento"], "dėstytojo"),
+    ("Taip mes vieni kitiems padedame mokytis ________.", ["geriau", "greičiau", "daugiau"], "geriau"),
+    ("Kiekvieną dieną aš einu į ________.", ["kavinę", "universitetą", "parduotuvę"], "universitetą"),
+    ("Per paskaitas aš dirbu su ________.", ["draugais", "projektas", "įvairiais projektais"], "įvairiais projektais"),
+    ("Kartais aš nesuprantu užduoties, todėl klausiu ________.", ["dėstytojo", "mokytojo", "direktoriaus"], "dėstytojo"),
+    ("Po paskaitų mes sėdime su draugais ________.", ["bibliotekoje", "kavinėje", "kambaryje"], "bibliotekoje"),
+    ("Mes klausome muzikos, bet tyliai arba ________.", ["garsiai", "greitai", "pirmyn"], "garsiai"),
+    ("Aš užsirašau ________ informaciją paskaitose.", ["svarbią", "nereikšmingą", "paprastą"], "svarbią"),
+    ("Dėstytojas visada ________ užduotis aiškiai.", ["paaiškina", "ignoruoja", "skundžiasi"], "paaiškina"),
+    ("Mes kartu dirbame prie ________ darbų.", ["grupinių", "asmeninių", "vieno"], "grupinių"),
+    ("Jei kažko nežinome, mes klausinėjame ________.", ["vieni kitų", "mokytojo", "šeimos"], "vieni kitų"),
     ("Taip mes vieni kitiems padedame mokytis ________.", ["geriau", "blogiau", "tikrai"], "geriau"),
 ]
 
@@ -18,32 +35,38 @@ if 'started' not in st.session_state:
 
 st.markdown("<h1 style='text-align: center; color: #b30000;'>📚 Mano diena universitete – žaidimas</h1>", unsafe_allow_html=True)
 
+# Centered start button
 if not st.session_state.started:
-    if st.button("Pradėti žaidimą 🎮"):
+    st.markdown("<div style='text-align: center;'>", unsafe_allow_html=True)
+    if st.button("🎮 Pradėti žaidimą"):
         st.session_state.started = True
+    st.markdown("</div>", unsafe_allow_html=True)
     st.stop()
 
-# Show question or result
+# If not finished
 if not st.session_state.show_result:
     q = st.session_state.questions[st.session_state.current]
     sentence, options, correct = q
 
-    st.markdown(f"## {sentence}")
-    selected = st.radio("Pasirink atsakymą:", options, key=st.session_state.current)
+    st.markdown(f"### {sentence}")
+    selected = st.radio("Pasirink atsakymą:", options, key=f"q{st.session_state.current}")
 
-    if st.button("Patikrinti"):
+    if st.button("Patikrinti atsakymą"):
         if selected == correct:
             st.session_state.score += 5
             st.success("🎉 Teisingai! Puiku! 😊")
         else:
             st.error(f"❌ Neteisingai. Tinkamas atsakymas: **{correct}**")
 
+        # Move to next
         st.session_state.current += 1
 
         if st.session_state.current >= len(st.session_state.questions):
             st.session_state.show_result = True
 
-    st.markdown(f"**Progresas:** {st.session_state.current} iš {len(questions)} klausimų – {st.session_state.score} taškų")
+        st.experimental_rerun()
+
+    st.write(f"**Progresas:** {st.session_state.current + 1} iš {len(questions)} klausimų – {st.session_state.score} taškų")
 
 else:
     st.markdown(f"## 🎉 Žaidimas baigtas! Tavo rezultatas: {st.session_state.score} / 100 taškų.")
