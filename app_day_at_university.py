@@ -46,4 +46,12 @@ if not st.session_state.show_result:
     st.markdown(f"**Progresas:** {st.session_state.current} iš {len(questions)} klausimų – {st.session_state.score} taškų")
 
 else:
-    st.markdown(f"## 🎉 Žaidimas baigtas!
+    st.markdown(f"## 🎉 Žaidimas baigtas! Tavo rezultatas: {st.session_state.score} / 100 taškų.")
+    if st.button("🔄 Žaisti iš naujo"):
+        st.session_state.started = False
+        st.session_state.questions = random.sample(questions, len(questions))
+        st.session_state.current = 0
+        st.session_state.score = 0
+        st.session_state.show_result = False
+
+st.markdown("<style>div.row-widget.stRadio > div{flex-direction: column;}</style>", unsafe_allow_html=True)
